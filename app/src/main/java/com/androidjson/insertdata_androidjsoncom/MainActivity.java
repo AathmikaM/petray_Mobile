@@ -22,18 +22,18 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     String ServerURL = "http://localhost/athmi/get_data.php" ;
-    EditText name, reson, adate, location ;
+    EditText name, reason, adate, location ;
     Button button;
-    String TempName, TempEmail ;
+    String TempName, TempReason ,TempDate , Templocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         name = (EditText)findViewById(R.id.editText2);
-        reson = (EditText)findViewById(R.id.editText3);
-//        adate = (EditText)findViewById(R.id.editText4);
-//        location = (EditText)findViewById(R.id.editText5);
+        reason = (EditText)findViewById(R.id.editText3);
+        adate = (EditText)findViewById(R.id.editText4);
+        location = (EditText)findViewById(R.id.editText5);
         button = (Button)findViewById(R.id.button);
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
                 GetData();
 
-                InsertData(TempName, TempEmail);
+                InsertData(TempName, TempReason , TempDate , Templocation);
 
             }
         });
@@ -52,29 +52,29 @@ public class MainActivity extends AppCompatActivity {
 
        TempName = name.getText().toString();
 
-       TempEmail = reson.getText().toString();
-//       Tempdate = adate.getText().toString();
-//       Templocation = location.getText().toString();
+       TempReason = reason.getText().toString();
+       TempDate = adate.getText().toString();
+       Templocation = location.getText().toString();
 
     }
 
-    public void InsertData(final String name, final String email){
+    public void InsertData(final String name, final String reason, final String adate, final String location){
 
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
             @Override
             protected String doInBackground(String... params) {
 
                 String NameHolder = name ;
-                String EmailHolder = email ;
-//                String dateHolder = adate ;
-//                String locationHolder = location ;
+                String EmailHolder = reason ;
+                String dateHolder = adate ;
+                String locationHolder = location ;
 
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
                 nameValuePairs.add(new BasicNameValuePair("name", NameHolder));
                 nameValuePairs.add(new BasicNameValuePair("email", EmailHolder));
-//                nameValuePairs.add(new BasicNameValuePair("date", dateHolder));
-//                nameValuePairs.add(new BasicNameValuePair("location", locationHolder));
+                nameValuePairs.add(new BasicNameValuePair("date", dateHolder));
+                nameValuePairs.add(new BasicNameValuePair("location", locationHolder));
 
                 try {
                     HttpClient httpClient = new DefaultHttpClient();
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
         SendPostReqAsyncTask sendPostReqAsyncTask = new SendPostReqAsyncTask();
 
-        sendPostReqAsyncTask.execute(name, email);
+        sendPostReqAsyncTask.execute(name, reason, adate, location);
     }
 
 }
